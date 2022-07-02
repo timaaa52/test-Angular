@@ -1,0 +1,9 @@
+<div>
+    {{timer?.minutes}}<span>m:</span>{{timer?.seconds}}<span>s</span>
+</div>
+<div>
+    <button (click)="startTimer()">Start</button>
+    <button (click)="stopTimer()">Stop</button>
+    <button (click)="dbClickCheck()" #dbClick>Wait</button>
+    <button (click)="resetTimer()">Reset</button>
+</div>
