@@ -9,7 +9,7 @@ import { Service } from './app.service';
 	styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnDestroy {
-	timer: ITime;
+	timer = {} as ITime;
 	subscriptions = new Subscription();
 	dbClickSubscription = new Subscription();
 	@ViewChild('dbClick') dbClick?: ElementRef;
@@ -38,7 +38,7 @@ export class AppComponent implements OnDestroy {
 	}
 
 	dbClickCheck() {
-		let lastClickTime = 0;
+		let lastClickTime = new Date().getTime();
 		this.dbClickSubscription = fromEvent(
 			this.dbClick?.nativeElement,
 			'click'
@@ -47,13 +47,15 @@ export class AppComponent implements OnDestroy {
 				take(2),
 				tap((v) => {
 					let clickTimeNow = new Date().getTime();
-					if (clickTimeNow < lastClickTime + 500)
-						console.log(lastClickTime);
+					if (clickTimeNow < lastClickTime + 500) this.waitTimer();
 					lastClickTime = clickTimeNow;
 				})
 			)
 			.subscribe();
 	}
 
-	ngOnDestroy(): void {}
+	ngOnDestroy(): void {
+		this.subscriptions.unsubscribe();
+		this.dbClickSubscription.unsubscribe();
+	}
 }
